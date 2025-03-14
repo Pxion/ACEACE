@@ -164,7 +164,7 @@ else :
             st.subheader("上证指数")
             sh_max = df_sh["Date"].max().date()
             sh_min = sh_max-timedelta(days=365)
-            start_date, end_date = st.date_input("选择日期范围", value=(sh_min, sh_max), key="sh_date")
+            start_date, end_date = st.date_input("选择日期范围", value=(sh_min, sh_max),min_value=ten_years_ago, max_value=today, key="sh_date")
             filtered_df_sh = df_sh[(df_sh["Date"].dt.date >= start_date) & (df_sh["Date"].dt.date <= end_date)]
             st.markdown("**收盘价**")
             st.line_chart(filtered_df_sh.set_index("Date")["Close"])
