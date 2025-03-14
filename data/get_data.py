@@ -42,9 +42,10 @@ def get_data(symbol):
     df.to_csv(f"{symbol}_new.csv")
 
 # 设置参数
-symbol = "^DJI"        # 道琼斯指数代码/上证股指数代码
+# symbol = "^DJI"        # 道琼斯指数代码/上证股指数代码
+symbol = "000001.SS"
 start_date = "2012-01-01"
-end_date = "2025-3-11"
+end_date = "2025-3-14"
 
 get_data(symbol)
 # df=pd.read_csv("testData.csv")
