@@ -2,7 +2,7 @@
 安装并配置好数据库后通过以下命令运行程序\
 **streamlit run app.py**\
 未配置数据库环境，通过以下命令快速运行程序\
-**streamlit run app——test.py**
+**streamlit run app_test.py**
 
 ## 初始默认账号
 
