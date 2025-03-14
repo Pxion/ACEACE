@@ -144,8 +144,9 @@ else :
             dji_min = dji_max-timedelta(days=365)
             # 日期范围选择
             today = datetime.today().date()
-            ten_years_ago = today - timedelta(days=365 * 10)
-            start_date, end_date = st.date_input("选择日期范围", value=(dji_min, dji_max),min_value=ten_years_ago, max_value=today, key="dji_date")
+            ten_years_ago = datetime(2012, 1, 1).date()
+            start_date,end_date = st.date_input("选择日期范围", value=(dji_min,dji_max),min_value=ten_years_ago, max_value=today, key="dji_date")
+
             # 过滤数据
             filtered_df_dji = df_dji[(df_dji["Date"].dt.date >= start_date) & (df_dji["Date"].dt.date <= end_date)]
             st.markdown("**收盘价**")
@@ -183,6 +184,9 @@ else :
     with tabs[1] :
         st.header("功能界面")
         st.write("欢迎使用 AI 算法可视化界面。")
+
+
+
 
     # ---------------------------
     # 用户管理选项卡（仅管理员可见）
