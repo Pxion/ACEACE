@@ -28,19 +28,19 @@ def backtest_stock_trading(
     # Set up models
     if models_to_use is None:
         models_to_use = ['a2c', 'ddpg', 'ppo', 'td3', 'sac']
-
+    # 模型优化效果有限，强制使用cpu加载模型以提高性能
     trained_models = {}
     for model_name in models_to_use:
         if model_name == 'a2c':
-            trained_models['a2c'] = A2C.load(f"{trained_model_dir}/agent_a2c")
+            trained_models['a2c'] = A2C.load(f"{trained_model_dir}/agent_a2c", device='cpu')
         elif model_name == 'ddpg':
-            trained_models['ddpg'] = DDPG.load(f"{trained_model_dir}/agent_ddpg")
+            trained_models['ddpg'] = DDPG.load(f"{trained_model_dir}/agent_ddpg", device='cpu')
         elif model_name == 'ppo':
-            trained_models['ppo'] = PPO.load(f"{trained_model_dir}/agent_ppo")
+            trained_models['ppo'] = PPO.load(f"{trained_model_dir}/agent_ppo", device='cpu')
         elif model_name == 'td3':
-            trained_models['td3'] = TD3.load(f"{trained_model_dir}/agent_td3")
+            trained_models['td3'] = TD3.load(f"{trained_model_dir}/agent_td3", device='cpu')
         elif model_name == 'sac':
-            trained_models['sac'] = SAC.load(f"{trained_model_dir}/agent_sac")
+            trained_models['sac'] = SAC.load(f"{trained_model_dir}/agent_sac", device='cpu')
 
     # Prepare stock trading environment
     stock_dimension = len(trade.tic.unique())

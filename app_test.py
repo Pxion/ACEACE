@@ -6,11 +6,14 @@ import pyodbc
 import bcrypt
 
 import sys
+
+import torch
+
 # sys.path.append(r'D:\互联网+，大创\大创--多智能体市场分析\FinRL-master\examples')
 # sys.path.append(r"D:\互联网+，大创\大创--多智能体市场分析\FinRL-master")
 from Stock_NeurIPS2018_3_Backtest import backtest_stock_trading
 
-
+torch.classes.__path__ = []
 # # ---------------------------
 # # 数据库和数据文件初始化
 # # ---------------------------
@@ -44,6 +47,7 @@ st.markdown("""
         #stDecoration {display:none;}
     </style>
 """, unsafe_allow_html=True)
+
 
 
 
