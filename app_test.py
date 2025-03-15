@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-
+from utils import up_down_api
 import streamlit as st
 import pandas as pd
 import pyodbc
@@ -14,6 +14,9 @@ import torch
 from Stock_NeurIPS2018_3_Backtest import backtest_stock_trading
 
 torch.classes.__path__ = []
+
+
+
 # # ---------------------------
 # # 数据库和数据文件初始化
 # # ---------------------------
@@ -28,13 +31,23 @@ torch.classes.__path__ = []
 # conn = pyodbc.connect(
 #     f'DRIVER={driver};SERVER={server};DATABASE={database};UID={sql_username};PWD={sql_password}'
 # )
+@st.cache_data
+def init_data():
+    # 读取 CSV 数据，并将 Date 列转换为日期格式
+    df_dji = pd.read_csv("data/^DJI_new.csv")
+    df_dji["Date"] = pd.to_datetime(df_dji["Date"])
 
-# 读取 CSV 数据，并将 Date 列转换为日期格式
-df_dji = pd.read_csv("data/^DJI_new.csv")
-df_dji["Date"] = pd.to_datetime(df_dji["Date"])
+    df_sh = pd.read_csv("data/000001.SS_new.csv")
+    df_sh["Date"] = pd.to_datetime(df_sh["Date"])
 
-df_sh = pd.read_csv("data/000001.SS_new.csv")
-df_sh["Date"] = pd.to_datetime(df_sh["Date"])
+    # 获取dji及上证最新价格和涨跌幅
+
+    dji_price, dji_change = up_down_api.get_stock_info("道琼斯指数")
+    sh_price, sh_change = up_down_api.get_stock_info("上证指数")
+    return df_dji, df_dji,dji_price, dji_change, sh_price, sh_change
+
+
+df_dji, df_sh,dji_price, dji_change, sh_price, sh_change = init_data()
 
 st.markdown("""
     <style>
@@ -144,6 +157,23 @@ else :
         st.session_state['username'] = None
         st.session_state['role'] = None
         st.rerun()  # 登出后重运行，返回登录界面
+
+    # 如果涨跌幅为正，则用红色显示，否则用绿色显示（包括价格）
+    # 如果涨跌幅为正，则显示一个开心的emoji，否则显示一个难过的emoji
+    def display_index(container, title, price, change) :
+        color = "red" if change > 0 else "green"
+        emoji = "😊" if change > 0 else "😞"
+        container.header(title)
+        container.markdown(f"<h1 style='color:{color};'>{price} {emoji}</h1>", unsafe_allow_html=True)
+        container.header('当前涨跌幅:')
+        container.markdown(f"<h1 style='color:{color};'>{change}% {emoji}</h1>", unsafe_allow_html=True)
+
+
+    container_Dji = st.sidebar.container(border=True)
+    display_index(container_Dji, '当前道琼斯指数:', dji_price, dji_change)
+
+    container_sh = st.sidebar.container(border=True)
+    display_index(container_sh, '当前上证指数:', sh_price, sh_change)
 
     st.title("AI 算法可视化应用")
 
