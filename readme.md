@@ -1,7 +1,7 @@
 ## 运行程序
 安装并配置好数据库后通过以下命令运行程序\
 **streamlit run app.py**\
-未配置数据库环境，通过以下命令快速运行程序\
+未配置数据库环境，运行**startStreamlit.py**或通过以下命令快速运行程序\
 **streamlit run app_test.py**
 
 可以在startStreamlit.py中快捷启动

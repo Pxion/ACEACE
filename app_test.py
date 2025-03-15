@@ -33,6 +33,18 @@ df_dji["Date"] = pd.to_datetime(df_dji["Date"])
 df_sh = pd.read_csv("data/000001.SS_new.csv")
 df_sh["Date"] = pd.to_datetime(df_sh["Date"])
 
+st.markdown("""
+    <style>
+        .reportview-container {
+            margin-top: -2em;
+        }
+        #MainMenu {visibility: hidden;}
+        .stDeployButton {display:none;}
+        footer {visibility: hidden;}
+        #stDecoration {display:none;}
+    </style>
+""", unsafe_allow_html=True)
+
 
 
 # ---------------------------
