@@ -5,6 +5,11 @@ import pandas as pd
 import pyodbc
 import bcrypt
 
+import sys
+sys.path.append(r'D:\互联网+，大创\大创--多智能体市场分析\FinRL-master\examples')
+sys.path.append(r"D:\互联网+，大创\大创--多智能体市场分析\FinRL-master")
+from Stock_NeurIPS2018_3_Backtest import backtest_stock_trading
+
 
 # # ---------------------------
 # # 数据库和数据文件初始化
@@ -205,7 +210,35 @@ else :
         st.write(f"{selected_tic}数据如下：")
         st.dataframe(filtered_data,width=800, height=600)
 
+        # 选择模型
+        models_to_use = st.multiselect("选择模型", options=['全部'] + ['a2c', 'ddpg', 'ppo', 'td3', 'sac'], default='全部')
+        if '全部' in models_to_use:
+            models_to_use = ['a2c', 'ddpg', 'ppo', 'td3', 'sac']
+        # 选择初始资金
+        initial_cash = st.number_input("请输入初始资金：", min_value=0.0, value=1000000.0, step=100.0)
+        # 获取用户输入的 buy_cost_pct 和 sell_cost_pct 值
+        buy_cost_pct = st.number_input("购买股票的百分比成本", min_value=0.0, max_value=1.0, value=0.001,step=0.0001, format="%.4f")
+        sell_cost_pct = st.number_input("卖出股票的百分比成本", min_value=0.0, max_value=1.0, value=0.001, step=0.0001, format="%.4f")
+        # 选择模型调用时间范围
+        model_start_date,model_end_date = st.date_input("选择日期范围", value=(datetime(2021, 7, 1).date(),datetime(2021, 10, 29).date()),min_value=datetime(2009, 1, 1).date(), max_value=today)
 
+        # 点击“开始训练”按钮，调用回测函数
+        start_button = st.button("开始训练")
+        if start_button:
+            fig, result = backtest_stock_trading(
+                trade_data_path="model_data/trade_data.csv",
+                train_data_path="model_data/train_data.csv",
+                models_to_use=models_to_use,
+                initial_cash=initial_cash,
+                buy_cost_pct=buy_cost_pct,
+                sell_cost_pct=sell_cost_pct,
+                start_date=model_start_date,
+                end_date=model_end_date,
+            )
+            st.success("训练已开始！")
+            # 显示模型训练结果
+            st.dataframe(result, width=800, height=600)
+            st.pyplot(fig)
 
     # ---------------------------
     # 用户管理选项卡（仅管理员可见）
