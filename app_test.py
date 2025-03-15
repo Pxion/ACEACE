@@ -183,8 +183,8 @@ else :
     # ---------------------------
 
     # 读取CSV文件并获取 'tic' 列的所有不重复值,按照日期先后进行排列
-    train_data = pd.read_csv(r'D:/互联网+，大创/大创--多智能体市场分析/ai_web-master/model_data/train_data.csv')
-    trade_data = pd.read_csv(r'D:/互联网+，大创/大创--多智能体市场分析/ai_web-master/model_data/trade_data.csv')
+    train_data = pd.read_csv('model_data/train_data.csv')
+    trade_data = pd.read_csv('model_data/trade_data.csv')
     ticker_data = pd.concat([train_data, trade_data], ignore_index=True)
     ticker_data['date'] = pd.to_datetime(ticker_data['date'])
     ticker_data = ticker_data.sort_values(by='date', ascending=False)
