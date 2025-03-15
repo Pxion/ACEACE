@@ -6,10 +6,9 @@ bcrypt~=3.2.0
 numpy~=2.2.3
 scikit-learn~=1.6.1
 stockstats~=0.6.4
-FinRL~=0.3.7
 tqdm~=4.67.1
 gym~=0.26.2
-torch~=2.6.0+cu124
+torch
 exchange-calendars~=3.6.3
 pytz~=2025.1
 matplotlib~=3.10.0
