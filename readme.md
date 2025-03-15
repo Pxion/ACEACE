@@ -4,6 +4,8 @@
 未配置数据库环境，通过以下命令快速运行程序\
 **streamlit run app_test.py**
 
+可以在startStreamlit.py中快捷启动
+
 ## 初始默认账号
 
 |  账号   | 密码  |角色|
