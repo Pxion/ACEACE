@@ -6,8 +6,8 @@ import pyodbc
 import bcrypt
 
 import sys
-sys.path.append(r'D:\互联网+，大创\大创--多智能体市场分析\FinRL-master\examples')
-sys.path.append(r"D:\互联网+，大创\大创--多智能体市场分析\FinRL-master")
+# sys.path.append(r'D:\互联网+，大创\大创--多智能体市场分析\FinRL-master\examples')
+# sys.path.append(r"D:\互联网+，大创\大创--多智能体市场分析\FinRL-master")
 from Stock_NeurIPS2018_3_Backtest import backtest_stock_trading
 
 
