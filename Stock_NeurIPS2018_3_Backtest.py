@@ -16,14 +16,26 @@ def backtest_stock_trading(
     initial_cash=1000000, buy_cost_pct=0.001, sell_cost_pct=0.001,
     start_date='2021-07-01', end_date='2021-10-29', tech_indicator_list=None
 ):
-    # Load trade and train data
+
     train = pd.read_csv(train_data_path)
     trade = pd.read_csv(trade_data_path)
+
+    # 确保日期列在正确的范围内并保证数据类型一致
+    original_dtype = trade['date'].dtype
+    trade['date'] = pd.to_datetime(trade['date'])
+    start_date = pd.to_datetime(start_date)
+    end_date = pd.to_datetime(end_date)
+    trade = trade[(trade['date'] >= start_date) & (trade['date'] <= end_date)]
+    # 按照日期和股票代码重新排序
+    trade = trade.sort_values(by=['date', 'tic'])
+    trade['Unnamed: 0'] = trade.groupby('date').ngroup()
+    trade['date'] = trade['date'].astype(original_dtype)
 
     train = train.set_index(train.columns[0])
     train.index.names = ['']
     trade = trade.set_index(trade.columns[0])
     trade.index.names = ['']
+
 
     # Set up models
     if models_to_use is None:
