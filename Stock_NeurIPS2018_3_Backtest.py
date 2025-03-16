@@ -12,29 +12,31 @@ from pypfopt.efficient_frontier import EfficientFrontier
 
 
 def backtest_stock_trading(
-    trade_data_path, train_data_path, trained_model_dir="trained_models", models_to_use=None,
+    trade, train, trained_model_dir="trained_models", models_to_use=None,
     initial_cash=1000000, buy_cost_pct=0.001, sell_cost_pct=0.001,
-    start_date='2021-07-01', end_date='2021-10-29', tech_indicator_list=None
+    start_date='2020-07-01', end_date='2021-10-29', tech_indicator_list=None
 ):
 
-    train = pd.read_csv(train_data_path)
-    trade = pd.read_csv(trade_data_path)
 
-    # 确保日期列在正确的范围内并保证数据类型一致
-    original_dtype = trade['date'].dtype
-    trade['date'] = pd.to_datetime(trade['date'])
-    start_date = pd.to_datetime(start_date)
-    end_date = pd.to_datetime(end_date)
-    trade = trade[(trade['date'] >= start_date) & (trade['date'] <= end_date)]
-    # 按照日期和股票代码重新排序
-    trade = trade.sort_values(by=['date', 'tic'])
-    trade['Unnamed: 0'] = trade.groupby('date').ngroup()
-    trade['date'] = trade['date'].astype(original_dtype)
+    # 筛选指定日期内的数据
+    # 复制 date 列并转换为 datetime 格式
+    train['date_copy'] = pd.to_datetime(train['date'])
+    trade['date_copy'] = pd.to_datetime(trade['date'])
 
+    # 筛选指定日期内的数据
+    # train = train[(train["date_copy"].dt.date >= start_date) & (train["date_copy"].dt.date <= end_date)]
+    trade = trade[(trade["date_copy"].dt.date >= start_date) & (trade["date_copy"].dt.date <= end_date)]
+
+    # 删除复制的列
+    train.drop(columns=['date_copy'], inplace=True)
+    trade.drop(columns=['date_copy'], inplace=True)
     train = train.set_index(train.columns[0])
     train.index.names = ['']
     trade = trade.set_index(trade.columns[0])
     trade.index.names = ['']
+    # 查看数据形状
+    print("Train data shape:", train.shape)
+    print("Trade data shape:", trade.shape)
 
 
     # Set up models
@@ -141,11 +143,11 @@ def backtest_stock_trading(
     result['dji'] = dji["close"]
 
     # Plot results
-    fig, ax = plt.subplots(figsize=(15, 5))
-    result.plot(ax=ax)
-    ax.set_title("Backtest Results")
-
-    return fig, result
+    # fig, ax = plt.subplots(figsize=(15, 5))
+    # result.plot(ax=ax)
+    # ax.set_title("Backtest Results")
+    # fig.savefig('backtest_results.png')
+    return result
 
 
 # Example usage:
@@ -157,3 +159,4 @@ def backtest_stock_trading(
 #     models_to_use=['a2c', 'sac', 'ppo'], initial_cash=1000000
 # )
 # print(backtest_result)
+# backtest_stock_trading('model_data/trade_data.csv','model_data/train_data.csv')

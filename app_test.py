@@ -266,14 +266,14 @@ else :
         buy_cost_pct = st.number_input("购买股票的百分比成本", min_value=0.0, max_value=1.0, value=0.001,step=0.0001, format="%.4f")
         sell_cost_pct = st.number_input("卖出股票的百分比成本", min_value=0.0, max_value=1.0, value=0.001, step=0.0001, format="%.4f")
         # 选择模型调用时间范围
-        model_start_date,model_end_date = st.date_input("选择日期范围", value=(datetime(2021, 7, 1).date(),datetime(2021, 10, 29).date()),min_value=datetime(2009, 1, 1).date(), max_value=today)
+        model_start_date,model_end_date = st.date_input("选择日期范围", value=(datetime(2020, 7, 1).date(),datetime(2021, 10, 29).date()),min_value=datetime(2009, 1, 1).date(), max_value=today)
 
         # 点击“开始训练”按钮，调用回测函数
         start_button = st.button("开始训练")
         if start_button:
-            fig, result = backtest_stock_trading(
-                trade_data_path="model_data/trade_data.csv",
-                train_data_path="model_data/train_data.csv",
+            result = backtest_stock_trading(
+                trade=trade_data,
+                train=train_data,
                 models_to_use=models_to_use,
                 initial_cash=initial_cash,
                 buy_cost_pct=buy_cost_pct,
@@ -284,7 +284,7 @@ else :
             st.success("训练已开始！")
             # 显示模型训练结果
             st.dataframe(result, width=800, height=600)
-            st.pyplot(fig)
+            st.line_chart(result)
 
     # ---------------------------
     # 用户管理选项卡（仅管理员可见）
