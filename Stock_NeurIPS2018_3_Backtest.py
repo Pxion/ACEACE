@@ -30,10 +30,16 @@ def backtest_stock_trading(
     # 删除复制的列
     train.drop(columns=['date_copy'], inplace=True)
     trade.drop(columns=['date_copy'], inplace=True)
+    trade = trade.sort_values(by=['date', 'tic'])
+    trade['Unnamed: 0'] = trade.groupby('date').ngroup()
+
     train = train.set_index(train.columns[0])
     train.index.names = ['']
     trade = trade.set_index(trade.columns[0])
     trade.index.names = ['']
+
+
+
     # 查看数据形状
     print("Train data shape:", train.shape)
     print("Trade data shape:", trade.shape)
