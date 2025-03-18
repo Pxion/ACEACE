@@ -57,9 +57,7 @@ def get_model_data(ticker_list = config_tickers.DOW_30_TICKER,
     print(len(train))
     print(len(trade))
 
-    trade.reset_index(drop=True, inplace=True)
 
-    train.reset_index(drop=True, inplace=True)
 
     # ### Save data to csv file
 
