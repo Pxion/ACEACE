@@ -18,7 +18,6 @@ from stable_baselines3.common.vec_env import DummyVecEnv
 from finrl import config
 from finrl.meta.env_stock_trading.env_stocktrading import StockTradingEnv
 from finrl.meta.preprocessor.preprocessors import data_split
-from .feature_extractor import VAEFeatureExtractor
 
 MODELS = {"a2c": A2C, "ddpg": DDPG, "td3": TD3, "sac": SAC, "ppo": PPO}
 
